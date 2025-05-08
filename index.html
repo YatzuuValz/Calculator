@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Calculator</title>
+        <style>
+            main{
+                background-color: rgb(0, 0, 0);
+                width: 350px;
+                height: 560px;
+
+                display: flex;
+                flex-direction: column;
+
+            }
+            p{
+                font-family: Arial;
+                display: flex;
+                height: 100px;
+                align-items: center;
+                justify-content: end;
+
+                padding-right: 20px;
+                margin: 0px;
+
+                font-size: 30px;
+                font-weight: bolder;
+                color: white;
+            }
+            .box{
+                flex: 1;
+
+                display: flex;
+                flex-direction: column;
+            }
+            .button-div{
+                flex: 1;
+                padding: 10px 10px;
+
+                display: flex;
+                flex-direction: row;
+
+                justify-content: space-around;
+            }
+            .clear{
+                display: flex;
+                flex-direction: row;
+
+                justify-content: start;
+
+                padding-left: 15px;
+            }
+            button{
+                font-size: 20px;
+                font-weight: bold;
+                color: white;
+                border: none;
+                aspect-ratio: 1/1;
+                border-radius: 100px;
+                cursor: pointer;
+            }
+            .css-num{
+                background-color: rgb(99, 99, 99);
+            }
+            .css-num:active{
+                background-color: rgb(72, 72, 72);
+            }
+            .css-op{
+                background-color: rgb(255, 183, 14);
+            }
+
+        </style>
+    </head>
+    <body>
+        <main>
+            <p class="result"></p>
+            <div class="box">
+                <div class="button-div">
+                    <button class="css-num" onclick="putNum('1')">1</button>
+                    <button class="css-num" onclick="putNum('2')">2</button>
+                    <button class="css-num" onclick="putNum('3')">3</button>
+                    <button class="css-op" onclick="addopp('+')">+</button>
+                </div>
+                <div class="button-div">
+                    <button class="css-num" onclick="putNum('4')">4</button>
+                    <button class="css-num" onclick="putNum('5')">5</button>
+                    <button class="css-num" onclick="putNum('6')">6</button>
+                    <button class="css-op" onclick="addopp('-')">-</button>
+                </div>
+                <div class="button-div">
+                    <button class="css-num" onclick="putNum('7')">7</button>
+                    <button class="css-num" onclick="putNum('8')">8</button>
+                    <button class="css-num" onclick="putNum('9')">9</button>
+                    <button class="css-op" onclick="addopp('x')">x</button>
+                </div>
+                <div class="button-div"> 
+                    <button class="css-num" onclick="putNum(0)">0</button>
+                    <button class="css-num" onclick="putNum('.')">.</button>
+                    <button class="css-num" onclick="calculate()">=</button>
+                    <button class="css-op" onclick="addopp('/')">/</button>
+                </div>
+                <div class="button-div clear">
+                    <button class="css-num" onclick="clear()">Clear</button>
+                </div>
+            </div>
+        </main>
+        <script>
+            let var1 = '';
+            let var2 = '';
+            let opp = "";
+            let side = 0;
+            let deci = false;
+            const resultElem = document.querySelector('.result');
+
+            function putNum(num){
+                if(num === "."){
+                    if(deci){return}
+                    if(side === 1){
+                        var2 += num;
+                        resultElem.innerHTML += num;
+                    }
+                    if(side === 0){
+                        var1 += num;
+                        resultElem.innerHTML += num;
+                    }
+                    return
+                }
+                if(side === 0){
+                    var1 += num;
+                    resultElem.innerHTML += num;
+                }
+                else if(side === 1){
+                    var2 += num;
+                    resultElem.innerHTML += num;
+                }// masi menyimpan angka sebelumnya               
+                if(side === 2){
+                    var1 = num;
+                    resultElem.innerHTML = num
+                    deci = false;
+                    side = 0
+                }
+                else if(side === 3){
+                    var2 = num;
+                    resultElem.innerHTML += num
+                    side = 1
+                    deci = false;
+                }
+            }
+            function addopp(op){
+                if(side === 0 || side === 2){
+                    side = 3;
+                    opp = op
+                    resultElem.innerHTML += " "+op + " "
+                    deci = false;
+                }
+            }
+            function calculate(){
+                if(opp === "+"){
+                    var1 = String(Number(var1) + Number(var2));
+                }
+                else if(opp === "-"){
+                    var1 = String(Number(var1) - Number(var2));
+                }
+                else if(opp === "x"){
+                    var1 = String(Number(var1) * Number(var2));
+                }
+                else if(opp === "/"){
+                    var1 = String(Number(var1)/Number(var2));
+                }
+                side = 2;
+                resultElem.innerHTML = var1
+            }
+            function clear(){
+                console.log("memek")
+                resultElem.innerHTML = "";
+                var1 = "";
+                var2 = "";
+                opp = 0;
+                side = 0;
+                deci = false;
+            }
+        </script>
+    </body>
+</html>
