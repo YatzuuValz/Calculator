@@ -3,6 +3,10 @@
     <head>
         <title>Calculator</title>
         <style>
+            body{
+                display: flex;
+                flex-direction: row;
+            }
             main{
                 background-color: rgb(0, 0, 0);
                 width: 350px;
@@ -12,16 +16,21 @@
                 flex-direction: column;
 
             }
+            .div-result{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                height: 100px;
+                padding-right: 20px;
+            }
             p{
                 font-family: Arial;
                 display: flex;
-                height: 100px;
                 align-items: center;
                 justify-content: end;
 
-                padding-right: 20px;
                 margin: 0px;
-
                 font-size: 30px;
                 font-weight: bolder;
                 color: white;
@@ -67,12 +76,34 @@
             .css-op{
                 background-color: rgb(255, 183, 14);
             }
+            .history{
+                background-color: rgb(38, 38, 38);
+                width: 25w0px;
+                height: 560px;
+                overflow-y: scroll;
+            }
+            .history p{
+                color: rgb(187, 191, 194);
+                margin: 15px 20px;
+                font-size: 18px;
+                font-weight: 500;
+            }
+            h1{
+                font-family: Arial;
+                color: rgb(204, 204, 204);
+                margin: 14px 16px;
+                margin-left: 16px;
+                font-weight: 400;
+                letter-spacing: 4px;
+            }
 
         </style>
     </head>
     <body>
         <main>
-            <p class="result"></p>
+            <div class="div-result">
+                <p class="result"></p>
+            </div>
             <div class="box">
                 <div class="button-div">
                     <button class="css-num" onclick="putNum('1')">1</button>
@@ -99,16 +130,21 @@
                     <button class="css-op" onclick="addopp('/')">/</button>
                 </div>
                 <div class="button-div clear">
-                    <button class="css-num" onclick="clear()">Clear</button>
+                    <button class="css-num" onclick="clearCalc()">Clear</button>
                 </div>
             </div>
         </main>
+        <div class="history">
+            <h1>History</H1><hr>
+        </div>
         <script>
+            let history = []
             let var1 = '';
             let var2 = '';
             let opp = "";
             let side = 0;
             let deci = false;
+            const historyElem = document.querySelector(".history");
             const resultElem = document.querySelector('.result');
 
             function putNum(num){
@@ -149,28 +185,32 @@
                 if(side === 0 || side === 2){
                     side = 3;
                     opp = op
-                    resultElem.innerHTML += " "+op + " "
+                    resultElem.innerHTML += " "+ op + " "
                     deci = false;
                 }
             }
             function calculate(){
+                let result = 0;
                 if(opp === "+"){
-                    var1 = String(Number(var1) + Number(var2));
+                    result = String((Number(var1)|| 0) + (Number(var2)|| 0));
                 }
                 else if(opp === "-"){
-                    var1 = String(Number(var1) - Number(var2));
+                    result = String((Number(var1)|| 0) - (Number(var2)|| 0));
                 }
                 else if(opp === "x"){
-                    var1 = String(Number(var1) * Number(var2));
+                    result = String((Number(var1)|| 0) * (Number(var2)|| 0));
                 }
                 else if(opp === "/"){
-                    var1 = String(Number(var1)/Number(var2));
+                    result = String((Number(var1)|| 0)/(Number(var2)|| 0));
                 }
+                history.push(`${var1} ${opp} ${var2} = ${result}`)
+                console.log(history)
                 side = 2;
+                var1 = result
                 resultElem.innerHTML = var1
+                historyElem.innerHTML +=  `<p>${history[history.length-1]}</p>`
             }
-            function clear(){
-                console.log("memek")
+            function clearCalc(){
                 resultElem.innerHTML = "";
                 var1 = "";
                 var2 = "";
